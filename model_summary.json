@@ -1,0 +1,45 @@
+{
+  "n_customers": 20000,
+  "overall_churn_rate": 0.429,
+  "model_results": {
+    "Logistic Regression": {
+      "accuracy": 0.677,
+      "precision": 0.6601,
+      "recall": 0.5093,
+      "f1": 0.575,
+      "roc_auc": 0.7324
+    },
+    "Random Forest": {
+      "accuracy": 0.6703,
+      "precision": 0.6758,
+      "recall": 0.4446,
+      "f1": 0.5364,
+      "roc_auc": 0.7261
+    }
+  },
+  "top_features": {
+    "satisfaction_score": 0.2814587540346776,
+    "support_tickets_last_year": 0.15295213947317282,
+    "tickets_per_order": 0.14304044396553087,
+    "tenure_months": 0.14303133000122953,
+    "avg_order_value": 0.06005529984659553,
+    "monthly_spend": 0.05979650615916644,
+    "age": 0.0459474071620072,
+    "num_orders_last_year": 0.037442529205046975,
+    "region_West": 0.006091639924571877,
+    "membership_tier_Gold": 0.0059027149285102685
+  },
+  "churn_by_tier": {
+    "Platinum": 0.4403,
+    "Silver": 0.4318,
+    "Basic": 0.4303,
+    "Gold": 0.4171
+  },
+  "avg_spend_by_region": {
+    "Central": 121.46,
+    "North": 120.85,
+    "West": 120.36,
+    "East": 120.0,
+    "South": 118.93
+  }
+}

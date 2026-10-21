@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Customer Churn Predictive Intelligence Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --accent: #60a5fa;
+    --accent2: #f87171;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 24px;
+  }
+  h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); margin-bottom: 24px; }
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px 20px;
+    border: 1px solid #334155;
+  }
+  .kpi .value { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+  .kpi .label { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 18px;
+    border: 1px solid #334155;
+  }
+  .card h3 { margin-top: 0; font-size: 1rem; color: var(--text); }
+  canvas { max-height: 280px; }
+  .imgcard img { width: 100%; border-radius: 8px; margin-top: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #334155; }
+  th { color: var(--muted); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<h1>📊 Customer Churn Predictive Intelligence Dashboard</h1>
+<div class="subtitle">Cognevance Technologies — Big Data Analytics & Predictive Intelligence (Level 3)</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="value">20,000</div><div class="label">Customers Analyzed</div></div>
+  <div class="kpi"><div class="value">42.9%</div><div class="label">Overall Churn Rate</div></div>
+  <div class="kpi"><div class="value">0.732</div><div class="label">Best Model ROC-AUC (Logistic Regression)</div></div>
+  <div class="kpi"><div class="value">0.676</div><div class="label">Precision (Random Forest)</div></div>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <h3>Model Comparison</h3>
+    <table>
+      <tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>ROC-AUC</th></tr>
+      <tr><td>Logistic Regression</td><td>0.677</td><td>0.660</td><td>0.509</td><td>0.575</td><td>0.732</td></tr>
+      <tr><td>Random Forest</td><td>0.670</td><td>0.676</td><td>0.445</td><td>0.536</td><td>0.726</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Churn Rate by Membership Tier</h3>
+    <canvas id="tierChart"></canvas>
+  </div>
+
+  <div class="card">
+    <h3>Average Monthly Spend by Region</h3>
+    <canvas id="regionChart"></canvas>
+  </div>
+
+  <div class="card">
+    <h3>Top Churn Drivers (Feature Importance)</h3>
+    <canvas id="featureChart"></canvas>
+  </div>
+
+  <div class="card imgcard">
+    <h3>Confusion Matrix (Random Forest)</h3>
+    <img src="assets/confusion_matrix.png" alt="Confusion Matrix">
+  </div>
+
+  <div class="card imgcard">
+    <h3>ROC Curve (Random Forest)</h3>
+    <img src="assets/roc_curve.png" alt="ROC Curve">
+  </div>
+
+</div>
+
+<script>
+  Chart.defaults.color = "#e2e8f0";
+  Chart.defaults.borderColor = "#334155";
+
+  new Chart(document.getElementById("tierChart"), {
+    type: "bar",
+    data: {
+      labels: ["Platinum", "Silver", "Basic", "Gold"],
+      datasets: [{
+        label: "Churn Rate",
+        data: [0.4403, 0.4318, 0.4303, 0.4171],
+        backgroundColor: "#f87171"
+      }]
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 0.6 } } }
+  });
+
+  new Chart(document.getElementById("regionChart"), {
+    type: "bar",
+    data: {
+      labels: ["Central", "North", "West", "East", "South"],
+      datasets: [{
+        label: "Avg Monthly Spend ($)",
+        data: [121.46, 120.85, 120.36, 120.00, 118.93],
+        backgroundColor: "#4ade80"
+      }]
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  new Chart(document.getElementById("featureChart"), {
+    type: "bar",
+    data: {
+      labels: ["Satisfaction Score", "Support Tickets", "Tickets/Order", "Tenure (months)",
+               "Avg Order Value", "Monthly Spend", "Age", "Num Orders"],
+      datasets: [{
+        label: "Importance",
+        data: [0.281, 0.153, 0.143, 0.143, 0.060, 0.060, 0.046, 0.037],
+        backgroundColor: "#60a5fa"
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      plugins: { legend: { display: false } },
+      scales: { x: { beginAtZero: true } }
+    }
+  });
+</script>
+
+</body>
+</html>
